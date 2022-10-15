@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
@@ -27,6 +28,11 @@ func GetEndPoints() {
 	var data []schema.Endpoint
 	json.NewDecoder(res.Body).Decode(&data)
 	for _, endpoint := range data {
+		if strings.Contains(endpoint.Path, "indicators") {
+			if !strings.Contains(endpoint.Path, "sopr") {
+				continue
+			}
+		}
 		var dbEndPoint schema.Endpoint
 		result := database.Connection.Where("path = ?", endpoint.Path).Take(&dbEndPoint)
 		if result.RowsAffected == 0 {
