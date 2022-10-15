@@ -14,7 +14,7 @@ func GetEndPoints() {
 	baseURL := config.Viper.GetString("GLASSNODE_BASE_URL")
 	apiKey := config.Viper.GetString("GLASSNODE_API_KEY")
 	httpClient := &http.Client{}
-	req, err := http.NewRequest("GET", fmt.Sprintf("%sendpoints", baseURL), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v2/metrics/endpoints", baseURL), nil)
 	if err != nil {
 		panic(err)
 	}
