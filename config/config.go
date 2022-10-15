@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Config *viper.Viper = viper.New()
+var Viper *viper.Viper = viper.New()
 
 func Initialize() {
 	configFile := "development.env"
@@ -14,10 +14,10 @@ func Initialize() {
 		configFile = "production.env"
 	}
 	// Config the viper
-	Config.SetConfigFile(configFile)
-	Config.AddConfigPath(".")
+	Viper.SetConfigFile(configFile)
+	Viper.AddConfigPath(".")
 	// Read the config
-	err := Config.ReadInConfig()
+	err := Viper.ReadInConfig()
 	if err != nil {
 		panic(err)
 	}
