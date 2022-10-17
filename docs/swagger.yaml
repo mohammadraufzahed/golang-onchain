@@ -1,0 +1,11 @@
+basePath: /
+host: localhost:3000
+info:
+  contact:
+    name: ArioDev
+    url: https://ariodev.com
+  description: Glassnode clone for use in Iran
+  title: Glassnode Service
+  version: "1"
+paths: {}
+swagger: "2.0"

@@ -1,0 +1,15 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Glassnode clone for use in Iran",
+        "title": "Glassnode Service",
+        "contact": {
+            "name": "ArioDev",
+            "url": "https://ariodev.com"
+        },
+        "version": "1"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "paths": {}
+}
