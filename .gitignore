@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,go,goland,windows,macos,linux,vim,emacs
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,visualstudiocode,go,goland,windows,macos,linux,vim,emacs
 
-gitignore-api*
+glassnode-api*
 
 ### Emacs ###
 # -*- mode: gitignore; -*-

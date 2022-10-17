@@ -5,6 +5,7 @@ import (
 	"github.com/ario-team/glassnode-api/database"
 	"github.com/ario-team/glassnode-api/functions"
 	"github.com/ario-team/glassnode-api/redis"
+	"github.com/ario-team/glassnode-api/web"
 )
 
 func main() {
@@ -16,5 +17,7 @@ func main() {
 	// Connect to database
 	database.Connect()
 	database.Migrate()
-	functions.GetEndPoints()
+	go functions.GetEndPoints()
+	// Start the webserver
+	web.Start()
 }

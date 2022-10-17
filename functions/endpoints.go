@@ -35,7 +35,6 @@ func GetEndPoints() {
 		}
 		var dbEndPoint schema.Endpoint
 		result := database.Connection.Where("path = ?", endpoint.Path).Take(&dbEndPoint)
-		fmt.Println(result.RowsAffected)
 		if result.RowsAffected == 0 {
 			database.Connection.Create(&endpoint)
 		} else {
