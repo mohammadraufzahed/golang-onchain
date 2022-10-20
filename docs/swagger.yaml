@@ -48,6 +48,18 @@ definitions:
       name:
         type: string
     type: object
+  types.MiddleGroupCreate:
+    properties:
+      name:
+        type: string
+      topgroup_id:
+        type: integer
+    type: object
+  types.MiddleGroupUpdate:
+    properties:
+      name:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact:
@@ -57,7 +69,94 @@ info:
   title: Glassnode Service
   version: "1"
 paths:
-  /api/topgroup/top:
+  /api/middlegroup:
+    post:
+      operationId: middlegroup_create
+      parameters:
+      - description: Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/types.MiddleGroupCreate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Server faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Create the middle group
+      tags:
+      - Groups Management
+  /api/middlegroup/{id}:
+    delete:
+      consumes:
+      - application/json
+      operationId: middlegroup_delete
+      parameters:
+      - description: Group ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Delete the middle group
+      tags:
+      - Groups Management
+    patch:
+      consumes:
+      - application/json
+      operationId: middlegroup_update
+      parameters:
+      - description: Group id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updating data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/types.MiddleGroupUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Server faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Update the middle group
+      tags:
+      - Groups Management
+  /api/topgroup:
     get:
       operationId: topgroups_get
       produces:
@@ -101,7 +200,7 @@ paths:
       summary: Add a new Top group
       tags:
       - Groups Management
-  /api/topgroup/top/{id}:
+  /api/topgroup/{id}:
     delete:
       operationId: topgroups_delete
       parameters:

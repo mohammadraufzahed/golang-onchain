@@ -19,7 +19,139 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/topgroup/top": {
+        "/api/middlegroup": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Create the middle group",
+                "operationId": "middlegroup_create",
+                "parameters": [
+                    {
+                        "description": "Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.MiddleGroupCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/middlegroup/{id}": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Delete the middle group",
+                "operationId": "middlegroup_delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Group ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Update the middle group",
+                "operationId": "middlegroup_update",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Group id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Updating data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.MiddleGroupUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/topgroup": {
             "get": {
                 "produces": [
                     "application/json"
@@ -86,7 +218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/topgroup/top/{id}": {
+        "/api/topgroup/{id}": {
             "delete": {
                 "produces": [
                     "application/json"
@@ -239,6 +371,25 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.MiddleGroupCreate": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "topgroup_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.MiddleGroupUpdate": {
+            "type": "object",
+            "properties": {
                 "name": {
                     "type": "string"
                 }
