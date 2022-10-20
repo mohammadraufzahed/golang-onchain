@@ -19,7 +19,8 @@ func main() {
 	database.Connect()
 	database.Migrate()
 	go functions.GetEndPoints()
-	// Initialize Router
+	// Initialize Router and middleware
+	web.InitailizeMiddlewares()
 	router.InitializeRouter()
 	// Start the webserver
 	web.Start()

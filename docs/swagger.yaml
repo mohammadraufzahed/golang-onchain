@@ -1,4 +1,53 @@
 basePath: /
+definitions:
+  types.ChildGroups:
+    properties:
+      endpoint_id:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  types.CreateTopGroupReq:
+    description: Required data to create the Top Group
+    properties:
+      name:
+        description: Name
+        type: string
+    type: object
+  types.CreateTopGroupRes:
+    description: Top Group response data
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  types.GetTopGroups:
+    properties:
+      id:
+        type: integer
+      middle_groups:
+        items:
+          $ref: '#/definitions/types.MiddleGroup'
+        type: array
+      name:
+        type: string
+    type: object
+  types.MiddleGroup:
+    properties:
+      child_groups:
+        items:
+          $ref: '#/definitions/types.ChildGroups'
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact:
@@ -7,5 +56,104 @@ info:
   description: Glassnode clone for use in Iran
   title: Glassnode Service
   version: "1"
-paths: {}
+paths:
+  /api/group/top:
+    get:
+      operationId: topgroups_get
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: TopGroup
+          schema:
+            items:
+              $ref: '#/definitions/types.GetTopGroups'
+            type: array
+      summary: Get TopGroups
+      tags:
+      - Groups Management
+    post:
+      consumes:
+      - application/json
+      operationId: topgroup_create
+      parameters:
+      - description: TopGroup name
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/types.CreateTopGroupReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: TopGroup created
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Creating faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Add a new Top group
+      tags:
+      - Groups Management
+  /api/group/top/{id}:
+    delete:
+      operationId: topgroups_delete
+      parameters:
+      - description: TopGroup ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Result
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Error
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Delete TopGroup
+      tags:
+      - Groups Management
+    patch:
+      operationId: topgroups_update
+      parameters:
+      - description: TopGroup ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/types.CreateTopGroupReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: TopGroup updated
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Updating faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Update TopGroups
+      tags:
+      - Groups Management
 swagger: "2.0"
