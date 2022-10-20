@@ -32,8 +32,8 @@ func createTopGroup(c *fiber.Ctx) error {
 	var data schema.TopGroup
 	c.BodyParser(&data)
 	if data.Name == "" {
-		return c.Status(500).JSON(types.CreateTopGroupRes{
-			Status:  500,
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
 			Message: "Body is not correct",
 		})
 	}
@@ -79,13 +79,13 @@ func updateTopGroups(c *fiber.Ctx) error {
 	var body types.CreateTopGroupReq
 	c.BodyParser(&body)
 	if body.Name == "" {
-		return c.Status(500).JSON(types.CreateTopGroupRes{Status: 500, Message: "Body is not correct"})
+		return c.Status(400).JSON(types.CreateTopGroupRes{Status: 400, Message: "Body is not correct"})
 	}
 	topgroup.Name = body.Name
 	res = database.Connection.Save(&topgroup)
 	if res.RowsAffected == 0 {
-		return c.Status(500).JSON(types.CreateTopGroupRes{
-			Status:  500,
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
 			Message: "TopGroup Not Found",
 		})
 	}
@@ -153,15 +153,15 @@ func getTopGroups(c *fiber.Ctx) error {
 func deleteTopGroups(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
-		return c.Status(500).JSON(types.CreateTopGroupRes{
-			Status:  500,
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
 			Message: "Pass the id",
 		})
 	}
 	res := database.Connection.Delete(&schema.TopGroup{}, id)
 	if res.RowsAffected == 0 {
-		return c.Status(500).JSON(types.CreateTopGroupRes{
-			Status:  500,
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
 			Message: "ID not found",
 		})
 	}
