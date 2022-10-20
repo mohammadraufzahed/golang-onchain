@@ -31,6 +31,12 @@ func InitializeTopGroupRouter() {
 func createTopGroup(c *fiber.Ctx) error {
 	var data schema.TopGroup
 	c.BodyParser(&data)
+	if data.Name == "" {
+		return c.Status(500).JSON(types.CreateTopGroupRes{
+			Status:  500,
+			Message: "Body is not correct",
+		})
+	}
 	var foundedGroup schema.TopGroup
 	res := database.Connection.Where("name = ?", data.Name).Find(&foundedGroup)
 	if res.RowsAffected != 0 {
