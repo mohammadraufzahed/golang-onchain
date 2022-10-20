@@ -11,10 +11,10 @@ import (
 var TopGroupRouter fiber.Router = web.Server.Group("/api/topgroup")
 
 func InitializeTopGroupRouter() {
-	TopGroupRouter.Post("/top", createTopGroup)
-	TopGroupRouter.Get("/top", getTopGroups)
-	TopGroupRouter.Patch("/top/:id", updateTopGroups)
-	TopGroupRouter.Delete("/top/:id", deleteTopGroups)
+	TopGroupRouter.Post("/", createTopGroup)
+	TopGroupRouter.Get("/", getTopGroups)
+	TopGroupRouter.Patch("/:id", updateTopGroups)
+	TopGroupRouter.Delete("/:id", deleteTopGroups)
 }
 
 // Create Top Group
@@ -27,7 +27,7 @@ func InitializeTopGroupRouter() {
 // @Success 200  {object} types.CreateTopGroupRes "TopGroup created"
 // @Failure 400  {object} types.CreateTopGroupRes "Bad request"
 // @Failure 500  {object} types.CreateTopGroupRes "Creating faild"
-// @Router  /api/topgroup/top [post]
+// @Router  /api/topgroup [post]
 func createTopGroup(c *fiber.Ctx) error {
 	var data schema.TopGroup
 	c.BodyParser(&data)
@@ -59,7 +59,7 @@ func createTopGroup(c *fiber.Ctx) error {
 // @Success 200  {object} types.CreateTopGroupRes "TopGroup updated"
 // @Failure 400  {object} types.CreateTopGroupRes "Bad request"
 // @Failure 500  {object} types.CreateTopGroupRes "Updating faild"
-// @Router  /api/topgroup/top/{id} [patch]
+// @Router  /api/topgroup/{id} [patch]
 func updateTopGroups(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -101,7 +101,7 @@ func updateTopGroups(c *fiber.Ctx) error {
 // @ID      topgroups_get
 // @Produce json
 // @Success 200 {object} []types.GetTopGroups "TopGroup"
-// @Router  /api/topgroup/top [get]
+// @Router  /api/topgroup [get]
 func getTopGroups(c *fiber.Ctx) error {
 	var data []schema.TopGroup
 	var res []types.GetTopGroups
@@ -149,7 +149,7 @@ func getTopGroups(c *fiber.Ctx) error {
 // @Param   id  path     int                     true "TopGroup ID"
 // @Success 200 {object} types.CreateTopGroupRes "Result"
 // @Failure 500 {object} types.CreateTopGroupRes "Error"
-// @Router  /api/topgroup/top/{id} [delete]
+// @Router  /api/topgroup/{id} [delete]
 func deleteTopGroups(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
