@@ -12,7 +12,7 @@
     "host": "localhost:3000",
     "basePath": "/",
     "paths": {
-        "/api/group/top": {
+        "/api/topgroup/top": {
             "get": {
                 "produces": [
                     "application/json"
@@ -79,7 +79,7 @@
                 }
             }
         },
-        "/api/group/top/{id}": {
+        "/api/topgroup/top/{id}": {
             "delete": {
                 "produces": [
                     "application/json"

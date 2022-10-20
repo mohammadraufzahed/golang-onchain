@@ -57,7 +57,7 @@ info:
   title: Glassnode Service
   version: "1"
 paths:
-  /api/group/top:
+  /api/topgroup/top:
     get:
       operationId: topgroups_get
       produces:
@@ -101,7 +101,7 @@ paths:
       summary: Add a new Top group
       tags:
       - Groups Management
-  /api/group/top/{id}:
+  /api/topgroup/top/{id}:
     delete:
       operationId: topgroups_delete
       parameters:

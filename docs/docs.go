@@ -19,7 +19,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/group/top": {
+        "/api/topgroup/top": {
             "get": {
                 "produces": [
                     "application/json"
@@ -86,7 +86,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/group/top/{id}": {
+        "/api/topgroup/top/{id}": {
             "delete": {
                 "produces": [
                     "application/json"

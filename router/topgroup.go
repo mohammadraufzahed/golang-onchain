@@ -8,7 +8,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-var TopGroupRouter fiber.Router = web.Server.Group("/api/group")
+var TopGroupRouter fiber.Router = web.Server.Group("/api/topgroup")
 
 func InitializeTopGroupRouter() {
 	TopGroupRouter.Post("/top", createTopGroup)
@@ -27,7 +27,7 @@ func InitializeTopGroupRouter() {
 // @Success 200  {object} types.CreateTopGroupRes "TopGroup created"
 // @Failure 400  {object} types.CreateTopGroupRes "Bad request"
 // @Failure 500  {object} types.CreateTopGroupRes "Creating faild"
-// @Router  /api/group/top [post]
+// @Router  /api/topgroup/top [post]
 func createTopGroup(c *fiber.Ctx) error {
 	var data schema.TopGroup
 	c.BodyParser(&data)
@@ -53,7 +53,7 @@ func createTopGroup(c *fiber.Ctx) error {
 // @Success 200  {object} types.CreateTopGroupRes "TopGroup updated"
 // @Failure 400  {object} types.CreateTopGroupRes "Bad request"
 // @Failure 500  {object} types.CreateTopGroupRes "Updating faild"
-// @Router  /api/group/top/{id} [patch]
+// @Router  /api/topgroup/top/{id} [patch]
 func updateTopGroups(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -95,7 +95,7 @@ func updateTopGroups(c *fiber.Ctx) error {
 // @ID      topgroups_get
 // @Produce json
 // @Success 200 {object} []types.GetTopGroups "TopGroup"
-// @Router  /api/group/top [get]
+// @Router  /api/topgroup/top [get]
 func getTopGroups(c *fiber.Ctx) error {
 	var data []schema.TopGroup
 	var res []types.GetTopGroups
@@ -143,7 +143,7 @@ func getTopGroups(c *fiber.Ctx) error {
 // @Param   id  path     int                     true "TopGroup ID"
 // @Success 200 {object} types.CreateTopGroupRes "Result"
 // @Failure 500 {object} types.CreateTopGroupRes "Error"
-// @Router  /api/group/top/{id} [delete]
+// @Router  /api/topgroup/top/{id} [delete]
 func deleteTopGroups(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
