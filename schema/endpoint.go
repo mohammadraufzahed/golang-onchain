@@ -14,9 +14,3 @@ type Endpoint struct {
 	Resolutions datatypes.JSON `gorm:"not null" json:"resolutions"`
 	Formats     datatypes.JSON `gorm:"not null" json:"formats"`
 }
-
-type Asset struct {
-	Symbol string   `json:"symbol"`
-	Name   string   `json:"name"`
-	Tags   []string `json:"tags"`
-}

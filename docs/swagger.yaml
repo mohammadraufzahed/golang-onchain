@@ -26,6 +26,31 @@ definitions:
       status:
         type: integer
     type: object
+  types.EndpointGetAll:
+    properties:
+      assets:
+        items:
+          type: integer
+        type: array
+      currencies:
+        items:
+          type: integer
+        type: array
+      formats:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      path:
+        type: string
+      resolutions:
+        items:
+          type: integer
+        type: array
+      tier:
+        type: integer
+    type: object
   types.GetTopGroups:
     properties:
       id:
@@ -69,6 +94,40 @@ info:
   title: Glassnode Service
   version: "1"
 paths:
+  /api/endpoint/{id}:
+    get:
+      operationId: endpoints_get_one
+      parameters:
+      - description: Endpoint id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfull
+          schema:
+            $ref: '#/definitions/types.EndpointGetAll'
+      summary: Get the supported endpoint
+      tags:
+      - Endpoint
+  /api/endpoint/all:
+    get:
+      operationId: endpoints_get
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfull
+          schema:
+            items:
+              $ref: '#/definitions/types.EndpointGetAll'
+            type: array
+      summary: Get the supported endpoints
+      tags:
+      - Endpoints
   /api/middlegroup:
     post:
       operationId: middlegroup_create

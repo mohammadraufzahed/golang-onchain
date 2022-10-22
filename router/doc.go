@@ -7,8 +7,8 @@ import (
 	"github.com/gofiber/swagger"
 )
 
-var DocRoute fiber.Router = web.Server.Group("/doc")
+var docRoute fiber.Router = web.Server.Group("/doc")
 
 func InitializeDocRoute() {
-	DocRoute.Get("/*", swagger.HandlerDefault)
+	docRoute.Get("/*", swagger.HandlerDefault)
 }

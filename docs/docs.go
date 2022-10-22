@@ -19,6 +19,58 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/endpoint/all": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Endpoints"
+                ],
+                "summary": "Get the supported endpoints",
+                "operationId": "endpoints_get",
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/types.EndpointGetAll"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/endpoint/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Endpoint"
+                ],
+                "summary": "Get the supported endpoint",
+                "operationId": "endpoints_get_one",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Endpoint id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "schema": {
+                            "$ref": "#/definitions/types.EndpointGetAll"
+                        }
+                    }
+                }
+            }
+        },
         "/api/middlegroup": {
             "post": {
                 "produces": [
@@ -338,6 +390,44 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "types.EndpointGetAll": {
+            "type": "object",
+            "properties": {
+                "assets": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "currencies": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "formats": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "resolutions": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "tier": {
                     "type": "integer"
                 }
             }

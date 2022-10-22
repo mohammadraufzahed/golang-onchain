@@ -46,4 +46,5 @@ func GetEndPoints() {
 			database.Connection.Save(&dbEndPoint)
 		}
 	}
+	fmt.Println("Job: Endpoints finished")
 }

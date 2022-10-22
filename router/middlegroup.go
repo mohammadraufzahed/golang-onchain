@@ -8,12 +8,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-var MiddleGroupRouter fiber.Router = web.Server.Group("/api/middlegroup")
+var middleGroupRouter fiber.Router = web.Server.Group("/api/middlegroup")
 
 func InitializeMiddleGroupRouter() {
-	MiddleGroupRouter.Post("/", createMiddleGroup)
-	MiddleGroupRouter.Patch("/:id", updateMiddleGroup)
-	MiddleGroupRouter.Delete("/:id", deleteMiddleGroup)
+	middleGroupRouter.Post("/", createMiddleGroup)
+	middleGroupRouter.Patch("/:id", updateMiddleGroup)
+	middleGroupRouter.Delete("/:id", deleteMiddleGroup)
 }
 
 // Create MiddleGroup

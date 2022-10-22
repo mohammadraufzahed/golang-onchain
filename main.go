@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
-	"github.com/ario-team/glassnode-api/functions"
+	job "github.com/ario-team/glassnode-api/jobs"
 	"github.com/ario-team/glassnode-api/redis"
 	"github.com/ario-team/glassnode-api/router"
 	"github.com/ario-team/glassnode-api/web"
@@ -18,7 +18,8 @@ func main() {
 	// Connect to database
 	database.Connect()
 	database.Migrate()
-	go functions.GetEndPoints()
+	// Register Jobs
+	job.RegisterJobs()
 	// Initialize Router and middleware
 	web.InitailizeMiddlewares()
 	router.InitializeRouter()

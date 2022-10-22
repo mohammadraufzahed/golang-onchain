@@ -8,13 +8,13 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-var TopGroupRouter fiber.Router = web.Server.Group("/api/topgroup")
+var topGroupRouter fiber.Router = web.Server.Group("/api/topgroup")
 
 func InitializeTopGroupRouter() {
-	TopGroupRouter.Post("/", createTopGroup)
-	TopGroupRouter.Get("/", getTopGroups)
-	TopGroupRouter.Patch("/:id", updateTopGroups)
-	TopGroupRouter.Delete("/:id", deleteTopGroups)
+	topGroupRouter.Post("/", createTopGroup)
+	topGroupRouter.Get("/", getTopGroups)
+	topGroupRouter.Patch("/:id", updateTopGroups)
+	topGroupRouter.Delete("/:id", deleteTopGroups)
 }
 
 // Create Top Group

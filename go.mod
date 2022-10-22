@@ -3,6 +3,7 @@ module github.com/ario-team/glassnode-api
 go 1.18
 
 require (
+	github.com/go-co-op/gocron v1.17.1
 	github.com/go-redis/redis/v9 v9.0.0-beta.3
 	github.com/gofiber/fiber/v2 v2.38.1
 	github.com/gofiber/swagger v0.1.6
@@ -42,6 +43,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
+	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -53,6 +55,7 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
+	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.0.0-20221013171732-95e765b1cc43 // indirect
 	golang.org/x/text v0.3.8 // indirect
 	golang.org/x/tools v0.1.12 // indirect
