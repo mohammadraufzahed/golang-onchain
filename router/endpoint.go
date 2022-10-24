@@ -63,7 +63,7 @@ func getEndpoints(c *fiber.Ctx) error {
 
 // Get supported endpoint
 // @Summary Get the supported endpoint
-// @Tags    Endpoint
+// @Tags    Endpoints
 // @ID      endpoints_get_one
 // @Produce json
 // @Param   id  path     int                  true "Endpoint id"

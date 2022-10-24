@@ -48,7 +48,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Endpoint"
+                    "Endpoints"
                 ],
                 "summary": "Get the supported endpoint",
                 "operationId": "endpoints_get_one",

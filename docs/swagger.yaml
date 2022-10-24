@@ -112,7 +112,7 @@ paths:
             $ref: '#/definitions/types.EndpointGetAll'
       summary: Get the supported endpoint
       tags:
-      - Endpoint
+      - Endpoints
   /api/endpoint/all:
     get:
       operationId: endpoints_get
