@@ -19,5 +19,6 @@ type ChildGroup struct {
 	gorm.Model
 	Name          string `gorm:"not null;unique"`
 	MiddleGroupID uint
+	Description   string
 	Endpoints     []Endpoint `gorm:"many2many:relative_endpoints;"`
 }

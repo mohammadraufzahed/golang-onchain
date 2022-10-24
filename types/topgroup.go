@@ -27,7 +27,8 @@ type MiddleGroup struct {
 }
 
 type ChildGroups struct {
-	ID         uint   `json:"id"`
-	Name       string `json:"name"`
-	EndpointID []uint `json:"endpoint_id"`
+	ID          uint   `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	EndpointID  []uint `json:"endpoint_id"`
 }

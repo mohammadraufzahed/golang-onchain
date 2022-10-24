@@ -68,7 +68,7 @@ func getEndpoints(c *fiber.Ctx) error {
 // @Produce json
 // @Param   id  path     int                  true "Endpoint id"
 // @Success 200 {object} types.EndpointGetAll "Successfull"
-// Failure 400 {object} types.CreateTopGroupRes "Bad request"
+// @Failure 400 {object} types.CreateTopGroupRes "Bad request"
 // @Router  /api/endpoint/{id} [get]
 func getEndpoint(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")

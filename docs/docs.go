@@ -19,6 +19,144 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/childgroup": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Create the child group",
+                "operationId": "childgroup_create",
+                "parameters": [
+                    {
+                        "description": "Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ChildGroupCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "schema": {
+                            "$ref": "#/definitions/types.ChildGroupUpdate"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/childgroup/{id}": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Delete the child group",
+                "operationId": "childgroup_delete",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Update the child group",
+                "operationId": "childgroup_update",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.ChildGroupUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server Faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            }
+        },
         "/api/endpoint/all": {
             "get": {
                 "produces": [
@@ -66,6 +204,12 @@ const docTemplate = `{
                         "description": "Successfull",
                         "schema": {
                             "$ref": "#/definitions/types.EndpointGetAll"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
                         }
                     }
                 }
@@ -355,9 +499,37 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "types.ChildGroupCreate": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "middlegroup_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.ChildGroupUpdate": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "types.ChildGroups": {
             "type": "object",
             "properties": {
+                "description": {
+                    "type": "string"
+                },
                 "endpoint_id": {
                     "type": "array",
                     "items": {

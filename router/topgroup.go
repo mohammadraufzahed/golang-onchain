@@ -113,8 +113,9 @@ func getTopGroups(c *fiber.Ctx) error {
 				var childs []types.ChildGroups
 				for _, child := range middle.ChildGroups {
 					childTemp := types.ChildGroups{
-						ID:   child.ID,
-						Name: child.Name,
+						ID:          child.ID,
+						Name:        child.Name,
+						Description: child.Description,
 					}
 					for _, endpoint := range child.Endpoints {
 						childTemp.EndpointID = append(childTemp.EndpointID, endpoint.ID)
