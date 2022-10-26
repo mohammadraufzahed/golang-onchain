@@ -117,9 +117,6 @@ func getTopGroups(c *fiber.Ctx) error {
 						Name:        child.Name,
 						Description: child.Description,
 					}
-					for _, endpoint := range child.Endpoints {
-						childTemp.EndpointID = append(childTemp.EndpointID, endpoint.ID)
-					}
 					childs = append(childs, childTemp)
 				}
 				middles = append(middles, types.MiddleGroup{

@@ -3,5 +3,5 @@ package database
 import "github.com/ario-team/glassnode-api/schema"
 
 func Migrate() {
-	Connection.AutoMigrate(&schema.Endpoint{}, &schema.TopGroup{}, &schema.MiddleGroup{}, &schema.ChildGroup{})
+	Connection.AutoMigrate(&schema.Endpoint{}, &schema.TopGroup{}, &schema.MiddleGroup{}, &schema.ChildGroup{}, &schema.Chart{})
 }
