@@ -20,5 +20,5 @@ type ChildGroup struct {
 	Name          string `gorm:"not null;unique"`
 	MiddleGroupID uint
 	Description   string
-	RelatedCharts []Chart
+	EndpointID    uint
 }

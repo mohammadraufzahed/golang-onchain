@@ -1,5 +1,7 @@
 package types
 
+import "github.com/ario-team/glassnode-api/schema"
+
 // Top Group Request data
 // @Description Required data to create the Top Group
 type CreateTopGroupReq struct {
@@ -27,8 +29,8 @@ type MiddleGroup struct {
 }
 
 type ChildGroups struct {
-	ID          uint   `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	EndpointID  []uint `json:"endpoint_id"`
+	ID          uint            `json:"id"`
+	Name        string          `json:"name"`
+	Description string          `json:"description"`
+	Endpoint    schema.Endpoint `json:"endpoint"`
 }

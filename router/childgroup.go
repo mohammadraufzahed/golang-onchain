@@ -1,6 +1,8 @@
 package router
 
 import (
+	"fmt"
+
 	"github.com/ario-team/glassnode-api/database"
 	"github.com/ario-team/glassnode-api/schema"
 	"github.com/ario-team/glassnode-api/types"
@@ -38,13 +40,13 @@ func createChildGroup(c *fiber.Ctx) error {
 	}
 	var childGroup schema.ChildGroup
 	dbResult := database.Connection.Where("name = ?", body.Name).First(&childGroup)
-	var middlegroup schema.MiddleGroup
 	if dbResult.RowsAffected == 1 {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
 			Status:  400,
 			Message: "ChildGroup exists",
 		})
 	}
+	var middlegroup schema.MiddleGroup
 	dbResult = database.Connection.Where("id = ?", body.MiddleGroupID).First(&middlegroup)
 	if dbResult.RowsAffected == 0 {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
@@ -52,16 +54,29 @@ func createChildGroup(c *fiber.Ctx) error {
 			Message: "MiddleGroup not found",
 		})
 	}
+	var endpoint schema.Endpoint
+	dbResult = database.Connection.Where("id = ?", body.EndpointID).First(&endpoint)
+	if dbResult.RowsAffected == 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "Endpoint not found",
+		})
+	}
 	err := database.Connection.Model(&middlegroup).Association("ChildGroups").Append(&schema.ChildGroup{
 		Name:        body.Name,
 		Description: body.Description,
+		EndpointID:  endpoint.ID,
 	})
 	if err != nil {
+		fmt.Println(err.Error())
 		return c.Status(500).JSON(types.CreateTopGroupRes{
 			Status:  500,
 			Message: "Server faild",
 		})
 	}
+	// var childgroup schema.ChildGroup
+	// database.Connection.Where("name = ?", body.Name).First(&childgroup)
+	// database.Connection.Model(&childgroup).Association("Endpoint").Append(endpoint)
 	return c.Status(200).JSON(&types.CreateTopGroupRes{
 		Status:  200,
 		Message: "Created",

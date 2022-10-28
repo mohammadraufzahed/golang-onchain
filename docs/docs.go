@@ -499,11 +499,73 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "schema.Endpoint": {
+            "type": "object",
+            "properties": {
+                "assets": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "currencies": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "formats": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "resolutions": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "tier": {
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
         "types.ChildGroupCreate": {
             "type": "object",
             "properties": {
                 "description": {
                     "type": "string"
+                },
+                "endpoint_id": {
+                    "type": "integer"
                 },
                 "middlegroup_id": {
                     "type": "integer"
@@ -530,11 +592,8 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "endpoint_id": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
+                "endpoint": {
+                    "$ref": "#/definitions/schema.Endpoint"
                 },
                 "id": {
                     "type": "integer"

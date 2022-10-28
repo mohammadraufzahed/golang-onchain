@@ -1,9 +1,50 @@
 basePath: /
 definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  schema.Endpoint:
+    properties:
+      assets:
+        items:
+          type: integer
+        type: array
+      createdAt:
+        type: string
+      currencies:
+        items:
+          type: integer
+        type: array
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      formats:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      path:
+        type: string
+      resolutions:
+        items:
+          type: integer
+        type: array
+      tier:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
   types.ChildGroupCreate:
     properties:
       description:
         type: string
+      endpoint_id:
+        type: integer
       middlegroup_id:
         type: integer
       name:
@@ -20,10 +61,8 @@ definitions:
     properties:
       description:
         type: string
-      endpoint_id:
-        items:
-          type: integer
-        type: array
+      endpoint:
+        $ref: '#/definitions/schema.Endpoint'
       id:
         type: integer
       name:
