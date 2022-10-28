@@ -18,6 +18,29 @@ services:
       POSTGRES_DB: glassnode
     ports:
       - 5432:5432
+  tsdb:
+    image: influxdb:2.4-alpine
+    ports:
+      - 8086:8086
+    environment:
+      DOCKER_INFLUXDB_INIT_USERNAME: influx
+      DOCKER_INFLUXDB_INIT_PASSWORD: influx
+      DOCKER_INFLUXDB_INIT_ORG: glassnode
+      DOCKER_INFLUXDB_INIT_BUCKET: glassnode
+      INFLUXDB_DB: glassnode
+      INFLUXDB_ADMIN_USER: glassnode
+      INFLUXDB_ADMIN_PASSWORD: glassnode
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: glassnode
+  # ui:
+  #   image: chronograf:latest
+  #   ports: 
+  #     - 8888:8888
+  #   depends_on:
+  #     - tsdb
+  #   environment:
+  #     INFLUXDB_URL: http://tsdb:8086
+  #     INFLUXDB_USERNAME: glassnode
+  #     INFLUXDB_PASSWORD: glassnode
 volumes:
   cache:
     driver: local

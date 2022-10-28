@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
+	"github.com/ario-team/glassnode-api/influxdb"
 	job "github.com/ario-team/glassnode-api/jobs"
 	"github.com/ario-team/glassnode-api/redis"
 	"github.com/ario-team/glassnode-api/router"
@@ -23,6 +24,9 @@ func main() {
 	// Initialize Router and middleware
 	web.InitailizeMiddlewares()
 	router.InitializeRouter()
+	// fmt.Println(time.Now().UTC().Unix())
+	influxdb.Connect()
+	defer influxdb.Client.Close()
 	// Start the webserver
 	web.Start()
 }
