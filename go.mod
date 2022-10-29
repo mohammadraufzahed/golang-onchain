@@ -7,6 +7,8 @@ require (
 	github.com/go-redis/redis/v9 v9.0.0-beta.3
 	github.com/gofiber/fiber/v2 v2.38.1
 	github.com/gofiber/swagger v0.1.6
+	github.com/influxdata/influxdb-client-go/v2 v2.12.0
+	github.com/shopspring/decimal v1.2.0
 	github.com/spf13/viper v1.13.0
 	github.com/swaggo/swag v1.8.6
 	gorm.io/datatypes v1.0.7
@@ -27,7 +29,6 @@ require (
 	github.com/go-openapi/swag v0.22.3 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/influxdata/influxdb-client-go/v2 v2.12.0 // indirect
 	github.com/influxdata/line-protocol v0.0.0-20200327222509-2487e7298839 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.13.0 // indirect

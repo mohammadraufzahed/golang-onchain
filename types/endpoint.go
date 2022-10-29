@@ -13,3 +13,15 @@ type EndpointGetAll struct {
 	Resolutions datatypes.JSON `json:"resolutions"`
 	Formats     datatypes.JSON `json:"formats"`
 }
+
+type Assets struct {
+	Symbol    string   `json:"symbol"`
+	Name      string   `json:"name"`
+	Tags      []string `json:"tags"`
+	Exchanges []string `json:"exchanges"`
+}
+
+type ChartData struct {
+	Time  int     `json:"t"`
+	Value float32 `json:"v"`
+}
