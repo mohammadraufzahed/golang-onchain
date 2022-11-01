@@ -65,6 +65,8 @@ definitions:
         $ref: '#/definitions/schema.Endpoint'
       id:
         type: integer
+      initialized:
+        type: boolean
       name:
         type: string
     type: object

@@ -604,6 +604,9 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
+                "initialized": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 }

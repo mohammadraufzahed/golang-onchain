@@ -33,4 +33,5 @@ type ChildGroups struct {
 	Name        string          `json:"name"`
 	Description string          `json:"description"`
 	Endpoint    schema.Endpoint `json:"endpoint"`
+	Initialized bool            `json:"initialized"`
 }
