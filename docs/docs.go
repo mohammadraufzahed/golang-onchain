@@ -61,6 +61,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/types.CreateTopGroupRes"
                         }
+                    },
+                    "503": {
+                        "description": "Queue is full",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
                     }
                 }
             }

@@ -15,9 +15,11 @@ import (
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
 
-func InitializeChart(endpointID uint) {
+func InitializeChart(endpointID uint, chartID uint) {
 	var endpoint schema.Endpoint
+	var childgroup schema.ChildGroup
 	database.Connection.Where("id = ?", endpointID).First(&endpoint)
+	database.Connection.Where("id = ?", chartID).First(&childgroup)
 	var assets []types.Assets
 	var resolutions []string
 	apiKey := config.Viper.GetString("GLASSNODE_API_KEY")
@@ -26,6 +28,8 @@ func InitializeChart(endpointID uint) {
 	count := 0
 	httpClient := &http.Client{}
 	writeApi := influxdb.Client.WriteAPIBlocking("glassnode", "glassnode")
+	fmt.Println(resolutions)
+	fmt.Printf("Collectig %v assets with resolutions: %v\n", len(assets), len(resolutions))
 	for _, asset := range assets {
 		baseUrl := fmt.Sprintf("%v%v?a=%v&f=JSON", config.Viper.GetString("GLASSNODE_BASE_URL"), endpoint.Path, asset.Symbol)
 		for _, resolution := range resolutions {
@@ -35,7 +39,6 @@ func InitializeChart(endpointID uint) {
 				req.Header.Set("X-Api-Key", apiKey)
 				res, err := httpClient.Do(req)
 				if err == nil {
-					fmt.Println(res.StatusCode)
 					defer res.Body.Close()
 					var points []types.ChartData
 					json.NewDecoder(res.Body).Decode(&points)
@@ -52,10 +55,8 @@ func InitializeChart(endpointID uint) {
 						}
 					}
 					writeApi.Flush(context.Background())
-					fmt.Printf("%v saved\n", len(points))
 					count = count + 1
 					if count == 25 {
-						fmt.Println("Sleep for 1 min")
 						count = 0
 						time.Sleep(time.Minute * 1)
 					}
@@ -65,4 +66,6 @@ func InitializeChart(endpointID uint) {
 			}
 		}
 	}
+	childgroup.Initialized = true
+	database.Connection.Save(&childgroup)
 }

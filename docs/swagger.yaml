@@ -178,6 +178,10 @@ paths:
           description: Server Faild
           schema:
             $ref: '#/definitions/types.CreateTopGroupRes'
+        "503":
+          description: Queue is full
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
       summary: Create the child group
       tags:
       - Groups Management

@@ -8,7 +8,6 @@ require (
 	github.com/gofiber/fiber/v2 v2.38.1
 	github.com/gofiber/swagger v0.1.6
 	github.com/influxdata/influxdb-client-go/v2 v2.12.0
-	github.com/shopspring/decimal v1.2.0
 	github.com/spf13/viper v1.13.0
 	github.com/swaggo/swag v1.8.6
 	gorm.io/datatypes v1.0.7

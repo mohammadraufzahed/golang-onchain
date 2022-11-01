@@ -7,6 +7,7 @@ import (
 	"github.com/ario-team/glassnode-api/schema"
 	"github.com/ario-team/glassnode-api/types"
 	"github.com/ario-team/glassnode-api/web"
+	"github.com/ario-team/glassnode-api/workers"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -28,6 +29,7 @@ func InitializeChildGroupRoute() {
 // @Success 200 {object} types.ChildGroupUpdate "Successfull"
 // @Failure 400 {object} types.CreateTopGroupRes "Bad request"
 // @Failure 500 {object} types.CreateTopGroupRes "Server Faild"
+// @Failure 503 {object} types.CreateTopGroupRes "Queue is full"
 // @Router /api/childgroup [post]
 func createChildGroup(c *fiber.Ctx) error {
 	var body types.ChildGroupCreate
@@ -36,6 +38,12 @@ func createChildGroup(c *fiber.Ctx) error {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
 			Status:  400,
 			Message: "Body is empty",
+		})
+	}
+	if workers.ChartsJobsLen == 2 {
+		return c.Status(503).JSON(types.CreateTopGroupRes{
+			Status:  503,
+			Message: "Queue is full",
 		})
 	}
 	var childGroup schema.ChildGroup
@@ -62,10 +70,22 @@ func createChildGroup(c *fiber.Ctx) error {
 			Message: "Endpoint not found",
 		})
 	}
+	var middles []schema.MiddleGroup
+	dbResult = database.Connection.Where("endpoint_id = ?", endpoint.ID).Find(&middles)
+	endpointInitialized := false
+	if dbResult.RowsAffected != 0 {
+		endpointInitialized = true
+	} else {
+		workers.ChartJobs <- workers.ChartInput{
+			EndpointID: endpoint.ID,
+			ChartID:    middlegroup.ID,
+		}
+	}
 	err := database.Connection.Model(&middlegroup).Association("ChildGroups").Append(&schema.ChildGroup{
 		Name:        body.Name,
 		Description: body.Description,
 		EndpointID:  endpoint.ID,
+		Initialized: endpointInitialized,
 	})
 	if err != nil {
 		fmt.Println(err.Error())
@@ -74,9 +94,6 @@ func createChildGroup(c *fiber.Ctx) error {
 			Message: "Server faild",
 		})
 	}
-	// var childgroup schema.ChildGroup
-	// database.Connection.Where("name = ?", body.Name).First(&childgroup)
-	// database.Connection.Model(&childgroup).Association("Endpoint").Append(endpoint)
 	return c.Status(200).JSON(&types.CreateTopGroupRes{
 		Status:  200,
 		Message: "Created",

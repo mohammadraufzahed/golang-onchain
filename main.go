@@ -3,12 +3,12 @@ package main
 import (
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
-	"github.com/ario-team/glassnode-api/functions"
 	"github.com/ario-team/glassnode-api/influxdb"
 	job "github.com/ario-team/glassnode-api/jobs"
 	"github.com/ario-team/glassnode-api/redis"
 	"github.com/ario-team/glassnode-api/router"
 	"github.com/ario-team/glassnode-api/web"
+	"github.com/ario-team/glassnode-api/workers"
 )
 
 func main() {
@@ -28,7 +28,8 @@ func main() {
 	// fmt.Println(time.Now().UTC().Unix())
 	influxdb.Connect()
 	defer influxdb.Client.Close()
-	functions.InitializeChart(4)
+	// Initialize workers
+	workers.InitializeWorkers()
 	// Start the webserver
 	web.Start()
 }
