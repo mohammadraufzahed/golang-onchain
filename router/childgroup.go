@@ -21,16 +21,16 @@ func InitializeChildGroupRoute() {
 
 // Create child group
 // @Summary Create the child group
-// @Tags Groups Management
-// @ID childgroup_create
-// @Accept json
+// @Tags    Groups Management
+// @ID      childgroup_create
+// @Accept  json
 // @Produce json
-// @Param data body types.ChildGroupCreate true "Data"
-// @Success 200 {object} types.ChildGroupUpdate "Successfull"
-// @Failure 400 {object} types.CreateTopGroupRes "Bad request"
-// @Failure 500 {object} types.CreateTopGroupRes "Server Faild"
-// @Failure 503 {object} types.CreateTopGroupRes "Queue is full"
-// @Router /api/childgroup [post]
+// @Param   data body     types.ChildGroupCreate  true "Data"
+// @Success 200  {object} types.ChildGroupUpdate  "Successfull"
+// @Failure 400  {object} types.CreateTopGroupRes "Bad request"
+// @Failure 500  {object} types.CreateTopGroupRes "Server Faild"
+// @Failure 503  {object} types.CreateTopGroupRes "Queue is full"
+// @Router  /api/childgroup [post]
 func createChildGroup(c *fiber.Ctx) error {
 	var body types.ChildGroupCreate
 	c.BodyParser(&body)
@@ -102,16 +102,16 @@ func createChildGroup(c *fiber.Ctx) error {
 
 // Update child group
 // @Summary Update the child group
-// @Tags Groups Management
-// @ID childgroup_update
-// @Accept json
+// @Tags    Groups Management
+// @ID      childgroup_update
+// @Accept  json
 // @Produce json
-// @Param id path int true "ID"
-// @Param data body types.ChildGroupUpdate true "Data"
-// @Success 200 {object} types.CreateTopGroupRes "Successfull"
-// @Failure 400 {object} types.CreateTopGroupRes "Bad request"
-// @Failure 500 {object} types.CreateTopGroupRes "Server Faild"
-// @Router /api/childgroup/{id} [patch]
+// @Param   id   path     int                     true "ID"
+// @Param   data body     types.ChildGroupUpdate  true "Data"
+// @Success 200  {object} types.CreateTopGroupRes "Successfull"
+// @Failure 400  {object} types.CreateTopGroupRes "Bad request"
+// @Failure 500  {object} types.CreateTopGroupRes "Server Faild"
+// @Router  /api/childgroup/{id} [patch]
 func updateChildGroup(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
@@ -151,14 +151,14 @@ func updateChildGroup(c *fiber.Ctx) error {
 
 // Delete child group
 // @Summary Delete the child group
-// @Tags Groups Management
-// @ID childgroup_delete
+// @Tags    Groups Management
+// @ID      childgroup_delete
 // @Produce json
-// @Param id path int true "ID"
+// @Param   id  path     int                     true "ID"
 // @Success 200 {object} types.CreateTopGroupRes "Successfull"
 // @Failure 400 {object} types.CreateTopGroupRes "Bad request"
 // @Failure 500 {object} types.CreateTopGroupRes "Server Faild"
-// @Router /api/childgroup/{id} [delete]
+// @Router  /api/childgroup/{id} [delete]
 func deleteChildGroup(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
 	if err != nil {
