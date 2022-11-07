@@ -13,13 +13,12 @@ import (
 	"github.com/ario-team/glassnode-api/schema"
 	"github.com/ario-team/glassnode-api/types"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
+	"github.com/schollz/progressbar/v3"
 )
 
-func InitializeChart(endpointID uint, chartID uint) {
+func InitializeChart(endpointID uint) {
 	var endpoint schema.Endpoint
-	var childgroup schema.ChildGroup
 	database.Connection.Where("id = ?", endpointID).First(&endpoint)
-	database.Connection.Where("id = ?", chartID).First(&childgroup)
 	var assets []types.Assets
 	var resolutions []string
 	apiKey := config.Viper.GetString("GLASSNODE_API_KEY")
@@ -29,7 +28,10 @@ func InitializeChart(endpointID uint, chartID uint) {
 	httpClient := &http.Client{}
 	writeApi := influxdb.Client.WriteAPIBlocking("glassnode", "glassnode")
 	fmt.Println(resolutions)
-	fmt.Printf("Collectig %v assets with resolutions: %v\n", len(assets), len(resolutions))
+	bar := progressbar.NewOptions(len(assets),
+		progressbar.OptionEnableColorCodes(true),
+		progressbar.OptionSetDescription(fmt.Sprintf("[cyan]Endpoint %v:[reset] Collecting Charts...", endpointID)),
+	)
 	for _, asset := range assets {
 		baseUrl := fmt.Sprintf("%v%v?a=%v&f=JSON", config.Viper.GetString("GLASSNODE_BASE_URL"), endpoint.Path, asset.Symbol)
 		for _, resolution := range resolutions {
@@ -56,7 +58,7 @@ func InitializeChart(endpointID uint, chartID uint) {
 					}
 					writeApi.Flush(context.Background())
 					count = count + 1
-					if count == 25 {
+					if count == 60 {
 						count = 0
 						time.Sleep(time.Minute * 1)
 					}
@@ -65,7 +67,9 @@ func InitializeChart(endpointID uint, chartID uint) {
 				}
 			}
 		}
+		bar.Add(1)
 	}
-	childgroup.Initialized = true
-	database.Connection.Save(&childgroup)
+	bar.Exit()
+	endpoint.Initialized = true
+	database.Connection.Save(&endpoint)
 }
