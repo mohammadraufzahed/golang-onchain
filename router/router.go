@@ -5,5 +5,4 @@ func InitializeRouter() {
 	InitializeTopGroupRouter()
 	InitializeMiddleGroupRouter()
 	InitializeEndpointRouter()
-	InitializeChildGroupRoute()
 }

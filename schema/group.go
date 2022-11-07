@@ -10,15 +10,7 @@ type TopGroup struct {
 
 type MiddleGroup struct {
 	gorm.Model
-	Name        string `gorm:"not null;unique"`
-	TopGroupID  uint
-	ChildGroups []ChildGroup
-}
-
-type ChildGroup struct {
-	gorm.Model
-	Name          string `gorm:"not null;unique"`
-	MiddleGroupID uint
-	Description   string
-	EndpointID    uint
+	Name       string `gorm:"not null;unique"`
+	TopGroupID uint
+	Endpoints  []Endpoint
 }

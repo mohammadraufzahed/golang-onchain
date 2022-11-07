@@ -19,150 +19,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/childgroup": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Groups Management"
-                ],
-                "summary": "Create the child group",
-                "operationId": "childgroup_create",
-                "parameters": [
-                    {
-                        "description": "Data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ChildGroupCreate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfull",
-                        "schema": {
-                            "$ref": "#/definitions/types.ChildGroupUpdate"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    },
-                    "500": {
-                        "description": "Server Faild",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    },
-                    "503": {
-                        "description": "Queue is full",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/childgroup/{id}": {
-            "delete": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Groups Management"
-                ],
-                "summary": "Delete the child group",
-                "operationId": "childgroup_delete",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfull",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    },
-                    "500": {
-                        "description": "Server Faild",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Groups Management"
-                ],
-                "summary": "Update the child group",
-                "operationId": "childgroup_update",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.ChildGroupUpdate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfull",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    },
-                    "500": {
-                        "description": "Server Faild",
-                        "schema": {
-                            "$ref": "#/definitions/types.CreateTopGroupRes"
-                        }
-                    }
-                }
-            }
-        },
         "/api/endpoint/all": {
             "get": {
                 "produces": [
@@ -239,6 +95,59 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/types.MiddleGroupCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/middlegroup/endpoint/{id}": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Append a endpoint to middle group",
+                "operationId": "middlegroup_append_endpoint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "MiddleGroup id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Endpoint id",
+                        "name": "endpoint_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.MiddleGroupAppendEndpoint"
                         }
                     }
                 ],
@@ -538,6 +447,9 @@ const docTemplate = `{
                 "deletedAt": {
                     "$ref": "#/definitions/gorm.DeletedAt"
                 },
+                "description": {
+                    "type": "string"
+                },
                 "formats": {
                     "type": "array",
                     "items": {
@@ -546,6 +458,15 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "initialized": {
+                    "type": "boolean"
+                },
+                "middleGroupID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
                 },
                 "path": {
                     "type": "string"
@@ -560,54 +481,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "updatedAt": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.ChildGroupCreate": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "endpoint_id": {
-                    "type": "integer"
-                },
-                "middlegroup_id": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.ChildGroupUpdate": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "types.ChildGroups": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "endpoint": {
-                    "$ref": "#/definitions/schema.Endpoint"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "initialized": {
-                    "type": "boolean"
-                },
-                "name": {
                     "type": "string"
                 }
             }
@@ -692,10 +565,10 @@ const docTemplate = `{
         "types.MiddleGroup": {
             "type": "object",
             "properties": {
-                "child_groups": {
+                "endpoints": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/types.ChildGroups"
+                        "$ref": "#/definitions/schema.Endpoint"
                     }
                 },
                 "id": {
@@ -703,6 +576,14 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "types.MiddleGroupAppendEndpoint": {
+            "type": "object",
+            "properties": {
+                "endpoint_id": {
+                    "type": "integer"
                 }
             }
         },

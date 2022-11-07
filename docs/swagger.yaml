@@ -22,12 +22,20 @@ definitions:
         type: array
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
       formats:
         items:
           type: integer
         type: array
       id:
         type: integer
+      initialized:
+        type: boolean
+      middleGroupID:
+        type: integer
+      name:
+        type: string
       path:
         type: string
       resolutions:
@@ -37,37 +45,6 @@ definitions:
       tier:
         type: integer
       updatedAt:
-        type: string
-    type: object
-  types.ChildGroupCreate:
-    properties:
-      description:
-        type: string
-      endpoint_id:
-        type: integer
-      middlegroup_id:
-        type: integer
-      name:
-        type: string
-    type: object
-  types.ChildGroupUpdate:
-    properties:
-      description:
-        type: string
-      name:
-        type: string
-    type: object
-  types.ChildGroups:
-    properties:
-      description:
-        type: string
-      endpoint:
-        $ref: '#/definitions/schema.Endpoint'
-      id:
-        type: integer
-      initialized:
-        type: boolean
-      name:
         type: string
     type: object
   types.CreateTopGroupReq:
@@ -123,14 +100,19 @@ definitions:
     type: object
   types.MiddleGroup:
     properties:
-      child_groups:
+      endpoints:
         items:
-          $ref: '#/definitions/types.ChildGroups'
+          $ref: '#/definitions/schema.Endpoint'
         type: array
       id:
         type: integer
       name:
         type: string
+    type: object
+  types.MiddleGroupAppendEndpoint:
+    properties:
+      endpoint_id:
+        type: integer
     type: object
   types.MiddleGroupCreate:
     properties:
@@ -153,101 +135,6 @@ info:
   title: Glassnode Service
   version: "1"
 paths:
-  /api/childgroup:
-    post:
-      consumes:
-      - application/json
-      operationId: childgroup_create
-      parameters:
-      - description: Data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/types.ChildGroupCreate'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfull
-          schema:
-            $ref: '#/definitions/types.ChildGroupUpdate'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-        "500":
-          description: Server Faild
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-        "503":
-          description: Queue is full
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-      summary: Create the child group
-      tags:
-      - Groups Management
-  /api/childgroup/{id}:
-    delete:
-      operationId: childgroup_delete
-      parameters:
-      - description: ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfull
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-        "500":
-          description: Server Faild
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-      summary: Delete the child group
-      tags:
-      - Groups Management
-    patch:
-      consumes:
-      - application/json
-      operationId: childgroup_update
-      parameters:
-      - description: ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/types.ChildGroupUpdate'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Successfull
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-        "400":
-          description: Bad request
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-        "500":
-          description: Server Faild
-          schema:
-            $ref: '#/definitions/types.CreateTopGroupRes'
-      summary: Update the child group
-      tags:
-      - Groups Management
   /api/endpoint/{id}:
     get:
       operationId: endpoints_get_one
@@ -371,6 +258,41 @@ paths:
           schema:
             $ref: '#/definitions/types.CreateTopGroupRes'
       summary: Update the middle group
+      tags:
+      - Groups Management
+  /api/middlegroup/endpoint/{id}:
+    post:
+      consumes:
+      - application/json
+      operationId: middlegroup_append_endpoint
+      parameters:
+      - description: MiddleGroup id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Endpoint id
+        in: body
+        name: endpoint_id
+        required: true
+        schema:
+          $ref: '#/definitions/types.MiddleGroupAppendEndpoint'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Server faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Append a endpoint to middle group
       tags:
       - Groups Management
   /api/topgroup:

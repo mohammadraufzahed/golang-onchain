@@ -12,6 +12,7 @@ var middleGroupRouter fiber.Router = web.Server.Group("/api/middlegroup")
 
 func InitializeMiddleGroupRouter() {
 	middleGroupRouter.Post("/", createMiddleGroup)
+	middleGroupRouter.Post("/endpoint/:id", appendEndpoint)
 	middleGroupRouter.Patch("/:id", updateMiddleGroup)
 	middleGroupRouter.Delete("/:id", deleteMiddleGroup)
 }
@@ -66,6 +67,69 @@ func createMiddleGroup(c *fiber.Ctx) error {
 		Message: "Created",
 	})
 
+}
+
+// Append Endpoint
+// @Summary Append a endpoint to middle group
+// @Tags Groups Management
+// @ID middlegroup_append_endpoint
+// @Accept json
+// @Produce json
+// @Param id path int true "MiddleGroup id"
+// @Param endpoint_id body types.MiddleGroupAppendEndpoint true "Endpoint id"
+// @Success 200  {object} types.CreateTopGroupRes "Created"
+// @Failure 400  {object} types.CreateTopGroupRes "Bad request"
+// @Failure 500  {object} types.CreateTopGroupRes "Server faild"
+// @Router /api/middlegroup/endpoint/{id} [post]
+func appendEndpoint(c *fiber.Ctx) error {
+	middlegroup_id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "ID not found",
+		})
+	}
+	var body types.MiddleGroupAppendEndpoint
+	err = c.BodyParser(&body)
+	if err != nil || body.EndpointID == 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "Wrong body",
+		})
+	}
+	var middlegroup schema.MiddleGroup
+	dbResult := database.Connection.Where("id = ?", middlegroup_id).First(&middlegroup)
+	if dbResult.RowsAffected == 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "MiddleGroup not found",
+		})
+	}
+	var endpoint schema.Endpoint
+	dbResult = database.Connection.Where("id = ?", body.EndpointID).First(&endpoint)
+	if dbResult.RowsAffected == 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "Endpoint not found",
+		})
+	}
+	if endpoint.MiddleGroupID != 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "Endpoint have a middlegroup",
+		})
+	}
+	err = database.Connection.Model(&middlegroup).Association("Endpoints").Append(&endpoint)
+	if err != nil {
+		return c.Status(500).JSON(types.CreateTopGroupRes{
+			Status:  500,
+			Message: "Server faild",
+		})
+	}
+	return c.Status(200).JSON(types.CreateTopGroupRes{
+		Status:  200,
+		Message: "Endpoint added",
+	})
 }
 
 // Update MiddleGroup

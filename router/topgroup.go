@@ -105,27 +105,15 @@ func updateTopGroups(c *fiber.Ctx) error {
 func getTopGroups(c *fiber.Ctx) error {
 	var data []schema.TopGroup
 	var res []types.GetTopGroups
-	dbRes := database.Connection.Preload("MiddleGroups.ChildGroups").Find(&data)
+	dbRes := database.Connection.Preload("MiddleGroups.Endpoints").Find(&data)
 	if dbRes.RowsAffected != 0 {
 		for _, top := range data {
 			var middles []types.MiddleGroup
 			for _, middle := range top.MiddleGroups {
-				var childs []types.ChildGroups
-				for _, child := range middle.ChildGroups {
-					var endpoint schema.Endpoint
-					database.Connection.Where("id = ?", child.EndpointID).First(&endpoint)
-					childTemp := types.ChildGroups{
-						ID:          child.ID,
-						Name:        child.Name,
-						Description: child.Description,
-						Endpoint:    endpoint,
-					}
-					childs = append(childs, childTemp)
-				}
 				middles = append(middles, types.MiddleGroup{
-					ID:          middle.ID,
-					Name:        middle.Name,
-					ChildGroups: childs,
+					ID:        middle.ID,
+					Name:      middle.Name,
+					Endpoints: middle.Endpoints,
 				})
 
 			}

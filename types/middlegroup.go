@@ -8,3 +8,7 @@ type MiddleGroupCreate struct {
 type MiddleGroupUpdate struct {
 	Name string `json:"name"`
 }
+
+type MiddleGroupAppendEndpoint struct {
+	EndpointID int `json:"endpoint_id"`
+}

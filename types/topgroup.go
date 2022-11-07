@@ -23,15 +23,7 @@ type GetTopGroups struct {
 }
 
 type MiddleGroup struct {
-	ID          uint          `json:"id"`
-	Name        string        `json:"name"`
-	ChildGroups []ChildGroups `json:"child_groups"`
-}
-
-type ChildGroups struct {
-	ID          uint            `json:"id"`
-	Name        string          `json:"name"`
-	Description string          `json:"description"`
-	Endpoint    schema.Endpoint `json:"endpoint"`
-	Initialized bool            `json:"initialized"`
+	ID        uint              `json:"id"`
+	Name      string            `json:"name"`
+	Endpoints []schema.Endpoint `json:"endpoints"`
 }
