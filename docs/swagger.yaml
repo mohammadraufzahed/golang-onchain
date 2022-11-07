@@ -261,6 +261,40 @@ paths:
       tags:
       - Groups Management
   /api/middlegroup/endpoint/{id}:
+    delete:
+      consumes:
+      - application/json
+      operationId: middlegroup_deleted_endpoint
+      parameters:
+      - description: MiddleGroup id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Endpoint id
+        in: body
+        name: endpoint_id
+        required: true
+        schema:
+          $ref: '#/definitions/types.MiddleGroupAppendEndpoint'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Server faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Remove a endpoint to middle group
+      tags:
+      - Groups Management
     post:
       consumes:
       - application/json

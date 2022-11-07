@@ -171,6 +171,57 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Groups Management"
+                ],
+                "summary": "Remove a endpoint to middle group",
+                "operationId": "middlegroup_deleted_endpoint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "MiddleGroup id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Endpoint id",
+                        "name": "endpoint_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.MiddleGroupAppendEndpoint"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    },
+                    "500": {
+                        "description": "Server faild",
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTopGroupRes"
+                        }
+                    }
+                }
             }
         },
         "/api/middlegroup/{id}": {
