@@ -9,6 +9,5 @@ import (
 var Scheduler *gocron.Scheduler = gocron.NewScheduler(time.UTC)
 
 func RegisterJobs() {
-	RegisterEndpointJob()
 	go Scheduler.StartAsync()
 }

@@ -70,22 +70,10 @@ func createChildGroup(c *fiber.Ctx) error {
 			Message: "Endpoint not found",
 		})
 	}
-	var middles []schema.MiddleGroup
-	dbResult = database.Connection.Where("endpoint_id = ?", endpoint.ID).Find(&middles)
-	endpointInitialized := false
-	if dbResult.RowsAffected != 0 {
-		endpointInitialized = true
-	} else {
-		workers.ChartJobs <- workers.ChartInput{
-			EndpointID: endpoint.ID,
-			ChartID:    middlegroup.ID,
-		}
-	}
 	err := database.Connection.Model(&middlegroup).Association("ChildGroups").Append(&schema.ChildGroup{
 		Name:        body.Name,
 		Description: body.Description,
 		EndpointID:  endpoint.ID,
-		Initialized: endpointInitialized,
 	})
 	if err != nil {
 		fmt.Println(err.Error())

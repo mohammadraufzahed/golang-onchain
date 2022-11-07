@@ -21,5 +21,4 @@ type ChildGroup struct {
 	MiddleGroupID uint
 	Description   string
 	EndpointID    uint
-	Initialized   bool `gorm:"default:false"`
 }

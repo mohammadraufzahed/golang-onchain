@@ -119,7 +119,6 @@ func getTopGroups(c *fiber.Ctx) error {
 						Name:        child.Name,
 						Description: child.Description,
 						Endpoint:    endpoint,
-						Initialized: child.Initialized,
 					}
 					childs = append(childs, childTemp)
 				}

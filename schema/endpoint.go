@@ -13,4 +13,5 @@ type Endpoint struct {
 	Currencies  datatypes.JSON `gorm:"not null" json:"currencies"`
 	Resolutions datatypes.JSON `gorm:"not null" json:"resolutions"`
 	Formats     datatypes.JSON `gorm:"not null" json:"formats"`
+	Initialized bool           `gorm:"default:false"`
 }
