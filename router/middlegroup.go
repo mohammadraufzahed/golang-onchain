@@ -114,12 +114,6 @@ func appendEndpoint(c *fiber.Ctx) error {
 			Message: "Endpoint not found",
 		})
 	}
-	if endpoint.MiddleGroupID != 0 {
-		return c.Status(400).JSON(types.CreateTopGroupRes{
-			Status:  400,
-			Message: "Endpoint have a middlegroup",
-		})
-	}
 	err = database.Connection.Model(&middlegroup).Association("Endpoints").Append(&endpoint)
 	if err != nil {
 		return c.Status(500).JSON(types.CreateTopGroupRes{
@@ -175,12 +169,6 @@ func deleteEndpoint(c *fiber.Ctx) error {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
 			Status:  400,
 			Message: "Endpoint not found",
-		})
-	}
-	if endpoint.MiddleGroupID == 0 {
-		return c.Status(400).JSON(types.CreateTopGroupRes{
-			Status:  400,
-			Message: "Endpoint have no middlegroup",
 		})
 	}
 	endpointCount := database.Connection.Model(&middlegroup).Where("id = ?", endpoint.ID).Association("Endpoints").Count()

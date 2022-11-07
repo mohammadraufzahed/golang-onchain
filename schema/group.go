@@ -12,5 +12,5 @@ type MiddleGroup struct {
 	gorm.Model
 	Name       string `gorm:"not null;unique"`
 	TopGroupID uint
-	Endpoints  []Endpoint
+	Endpoints  []Endpoint `gorm:"many2many:endpoints_middlegroup"`
 }
