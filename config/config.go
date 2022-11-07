@@ -12,6 +12,8 @@ func Initialize() {
 	configFile := "development.env"
 	if os.Getenv("ENV") == "PRODUCTION" {
 		configFile = "production.env"
+	} else if os.Getenv("ENV") == "DOCKER" {
+		configFile = "docker.env"
 	}
 	// Config the viper
 	Viper.SetConfigFile(configFile)

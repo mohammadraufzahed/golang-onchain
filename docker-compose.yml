@@ -3,6 +3,8 @@ version: "3"
 services:
   cache:
     image: redis:7-alpine
+    networks:
+      - app
     restart: always
     ports:
       - 6379:6379
@@ -12,6 +14,8 @@ services:
   database:
     image: postgres:14
     restart: always
+    networks:
+      - app
     environment:
       POSTGRES_PASSWORD: glassnode
       POSTGRES_USER: glassnode
@@ -24,6 +28,8 @@ services:
       - 8086:8086
     volumes:
       - tsdb:/var/lib/influxdb2
+    networks:
+      - app
     environment:
       DOCKER_INFLUXDB_INIT_USERNAME: influx
       DOCKER_INFLUXDB_INIT_PASSWORD: influx
@@ -43,8 +49,23 @@ services:
   #     INFLUXDB_URL: http://tsdb:8086
   #     INFLUXDB_USERNAME: glassnode
   #     INFLUXDB_PASSWORD: glassnode
+  api:
+    build:
+      context: .
+    networks:
+      - app
+    ports:
+      - 3000:3000
+    depends_on:
+      - cache
+      - database
+      - tsdb
+    restart: always
 volumes:
   cache:
     driver: local
   tsdb:
     driver: local
+
+networks:
+  app:

@@ -2,7 +2,9 @@ package redis
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/ario-team/glassnode-api/config"
 	"github.com/go-redis/redis/v9"
 )
 
@@ -11,7 +13,7 @@ var Ctx = context.Background()
 
 func Connect() {
 	Connection = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     fmt.Sprintf("%v:6379", config.Viper.GetString("REDIS_HOST")),
 		Password: "",
 		DB:       0,
 	})
