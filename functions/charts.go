@@ -13,7 +13,6 @@ import (
 	"github.com/ario-team/glassnode-api/schema"
 	"github.com/ario-team/glassnode-api/types"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
-	"github.com/schollz/progressbar/v3"
 )
 
 func InitializeChart(endpointID uint) {
@@ -21,17 +20,13 @@ func InitializeChart(endpointID uint) {
 	database.Connection.Where("id = ?", endpointID).First(&endpoint)
 	var assets []types.Assets
 	var resolutions []string
-	apiKey := config.Viper.GetString("GLASSNODE_API_KEY")
 	json.Unmarshal([]byte(endpoint.Assets), &assets)
 	json.Unmarshal([]byte(endpoint.Resolutions), &resolutions)
+	apiKey := config.Viper.GetString("GLASSNODE_API_KEY")
 	count := 0
 	httpClient := &http.Client{}
 	writeApi := influxdb.Client.WriteAPIBlocking("glassnode", "glassnode")
-	fmt.Println(resolutions)
-	bar := progressbar.NewOptions(len(assets),
-		progressbar.OptionEnableColorCodes(true),
-		progressbar.OptionSetDescription(fmt.Sprintf("[cyan]Endpoint %v:[reset] Collecting Charts...", endpointID)),
-	)
+	fmt.Printf("Collecting %v assets with %v resolutions\n", len(assets), len(resolutions))
 	for _, asset := range assets {
 		baseUrl := fmt.Sprintf("%v%v?a=%v&f=JSON", config.Viper.GetString("GLASSNODE_BASE_URL"), endpoint.Path, asset.Symbol)
 		for _, resolution := range resolutions {
@@ -40,36 +35,44 @@ func InitializeChart(endpointID uint) {
 			if err == nil {
 				req.Header.Set("X-Api-Key", apiKey)
 				res, err := httpClient.Do(req)
+
 				if err == nil {
-					defer res.Body.Close()
-					var points []types.ChartData
-					json.NewDecoder(res.Body).Decode(&points)
-					for _, point := range points {
-						p := influxdb2.NewPointWithMeasurement("charts").
-							AddTag("path", endpoint.Path).
-							AddTag("resolution", resolution).
-							AddTag("asset", asset.Symbol).
-							AddField("value", point.Value).
-							SetTime(time.Unix(int64(point.Time), 0))
-						err := writeApi.WritePoint(context.Background(), p)
-						if err != nil {
-							fmt.Println(err.Error())
+					if res.StatusCode == 200 {
+						defer res.Body.Close()
+						var points []types.ChartData
+						json.NewDecoder(res.Body).Decode(&points)
+						fmt.Printf("Collected %v points\n", len(points))
+						for _, point := range points {
+							p := influxdb2.NewPointWithMeasurement("charts").
+								AddTag("path", endpoint.Path).
+								AddTag("resolution", resolution).
+								AddTag("asset", asset.Symbol).
+								AddField("value", point.Value).
+								SetTime(time.Unix(int64(point.Time), 0))
+							err := writeApi.WritePoint(context.Background(), p)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
 						}
-					}
-					writeApi.Flush(context.Background())
-					count = count + 1
-					if count == 60 {
-						count = 0
-						time.Sleep(time.Minute * 1)
+						err := writeApi.Flush(context.Background())
+						if err == nil {
+							fmt.Printf("Writed %v data.\n", len(points))
+						} else {
+
+							fmt.Printf("Faild %v data.\n", len(points))
+						}
+						count = count + 1
+						if count == 40 {
+							count = 0
+							time.Sleep(time.Minute * 1)
+						}
 					}
 				} else {
 					fmt.Println(err.Error())
 				}
 			}
 		}
-		bar.Add(1)
 	}
-	bar.Exit()
 	endpoint.Initialized = true
 	database.Connection.Save(&endpoint)
 }

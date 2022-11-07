@@ -1,8 +1,6 @@
 package workers
 
 import (
-	"fmt"
-
 	"github.com/ario-team/glassnode-api/functions"
 )
 
@@ -14,16 +12,16 @@ type ChartInput struct {
 }
 
 func InitializeChartJobs() {
-	go worker(ChartJobs, 1)
+	for i := 0; i < 2; i++ {
+		go worker(ChartJobs, i)
+	}
 
 }
 
 func worker(endpoints <-chan ChartInput, id int) {
 	for endpoint := range endpoints {
 		ChartsJobsLen = ChartsJobsLen + 1
-		fmt.Printf("Worker %v started\n", id)
 		functions.InitializeChart(endpoint.EndpointID)
-		fmt.Printf("Worker %v finished\n", id)
 		ChartsJobsLen = ChartsJobsLen - 1
 	}
 }

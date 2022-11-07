@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   cache:
@@ -35,7 +35,7 @@ services:
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: glassnode
   # ui:
   #   image: chronograf:latest
-  #   ports: 
+  #   ports:
   #     - 8888:8888
   #   depends_on:
   #     - tsdb

@@ -50,7 +50,5 @@ func StartInitializing() {
 		workers.ChartJobs <- workers.ChartInput{
 			EndpointID: endpoint.ID,
 		}
-		fmt.Printf("Added %v\n", endpoint.ID)
 	}
-	fmt.Println("Jobs Passed")
 }
