@@ -94,7 +94,7 @@ func GetChart(id int, asset string, interval string, start uint, end uint) (char
 		return redis.Get(redisKey), nil
 	} else {
 		queryApi := influxdb.Client.QueryAPI("glassnode")
-		result, err := queryApi.Query(context.Background(), fmt.Sprintf(`from (bucket: "glassnode") |> range(start: %v, stop: %v) |> filter(fn: (r) => r.asset == "%v" and r.resolution == "%v")`, start, end, strings.ToUpper(asset), interval))
+		result, err := queryApi.Query(context.Background(), fmt.Sprintf(`from (bucket: "glassnode") |> range(start: %v, stop: %v) |> filter(fn: (r) => r.asset == "%v" and r.resolution == "%v" and r.path == %v)`, start, end, strings.ToUpper(asset), interval, endpoint.Path))
 		if err != nil {
 			fmt.Println("Error")
 			return "", err
