@@ -21,6 +21,8 @@ func main() {
 	// Connect to the redis
 	redis.Connect()
 	defer redis.Connection.Close()
+	influxdb.Connect()
+	defer influxdb.Client.Close()
 	// Connect to database
 	database.Connect()
 	database.Migrate()
@@ -34,8 +36,6 @@ func main() {
 	web.InitailizeMiddlewares()
 	router.InitializeRouter()
 	// fmt.Println(time.Now().UTC().Unix())
-	influxdb.Connect()
-	defer influxdb.Client.Close()
 	// Initialize workers
 	workers.InitializeWorkers()
 	// Start the webserver
