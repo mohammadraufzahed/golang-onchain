@@ -72,16 +72,16 @@ func createMiddleGroup(c *fiber.Ctx) error {
 
 // Append Endpoint
 // @Summary Append a endpoint to middle group
-// @Tags Groups Management
-// @ID middlegroup_append_endpoint
-// @Accept json
+// @Tags    Groups Management
+// @ID      middlegroup_append_endpoint
+// @Accept  json
 // @Produce json
-// @Param id path int true "MiddleGroup id"
-// @Param endpoint_id body types.MiddleGroupAppendEndpoint true "Endpoint id"
-// @Success 200  {object} types.CreateTopGroupRes "Created"
-// @Failure 400  {object} types.CreateTopGroupRes "Bad request"
-// @Failure 500  {object} types.CreateTopGroupRes "Server faild"
-// @Router /api/middlegroup/endpoint/{id} [post]
+// @Param   id          path     int                             true "MiddleGroup id"
+// @Param   endpoint_id body     types.MiddleGroupAppendEndpoint true "Endpoint id"
+// @Success 200         {object} types.CreateTopGroupRes         "Created"
+// @Failure 400         {object} types.CreateTopGroupRes         "Bad request"
+// @Failure 500         {object} types.CreateTopGroupRes         "Server faild"
+// @Router  /api/middlegroup/endpoint/{id} [post]
 func appendEndpoint(c *fiber.Ctx) error {
 	middlegroup_id, err := c.ParamsInt("id")
 	if err != nil {
@@ -129,16 +129,16 @@ func appendEndpoint(c *fiber.Ctx) error {
 
 // Remove Endpoint
 // @Summary Remove a endpoint to middle group
-// @Tags Groups Management
-// @ID middlegroup_deleted_endpoint
-// @Accept json
+// @Tags    Groups Management
+// @ID      middlegroup_deleted_endpoint
+// @Accept  json
 // @Produce json
-// @Param id path int true "MiddleGroup id"
-// @Param endpoint_id body types.MiddleGroupAppendEndpoint true "Endpoint id"
-// @Success 200  {object} types.CreateTopGroupRes "Deleted"
-// @Failure 400  {object} types.CreateTopGroupRes "Bad request"
-// @Failure 500  {object} types.CreateTopGroupRes "Server faild"
-// @Router /api/middlegroup/endpoint/{id} [delete]
+// @Param   id          path     int                             true "MiddleGroup id"
+// @Param   endpoint_id body     types.MiddleGroupAppendEndpoint true "Endpoint id"
+// @Success 200         {object} types.CreateTopGroupRes         "Deleted"
+// @Failure 400         {object} types.CreateTopGroupRes         "Bad request"
+// @Failure 500         {object} types.CreateTopGroupRes         "Server faild"
+// @Router  /api/middlegroup/endpoint/{id} [delete]
 func deleteEndpoint(c *fiber.Ctx) error {
 	middlegroup_id, err := c.ParamsInt("id")
 	if err != nil {

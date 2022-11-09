@@ -79,37 +79,30 @@ func InitializeChart(endpointID uint) {
 	database.Connection.Save(&endpoint)
 }
 
-type chartReturn struct {
-	T int64 `json:"time"`
-	V any   `json:"value"`
-}
-
-func GetChart(id int, asset string, interval string, start uint, end uint) (chart string, err error) {
-	var endpoint schema.Endpoint
-	database.Connection.Where("id = ?", id).First(&endpoint)
-	redisKey := fmt.Sprintf("%v/%v/%v/%v/%v", endpoint.Path, asset, interval, start, end)
+func GetChart(path string, asset string, resolution string, start int, end int) (string, error) {
+	redisKey := fmt.Sprintf("%v/%v/%v/%v/%v", path, asset, resolution, start, end)
 	exists := redis.Exists(redisKey)
-	var chartJson string
 	if exists == 1 {
 		return redis.Get(redisKey), nil
 	} else {
 		queryApi := influxdb.Client.QueryAPI("glassnode")
-		result, err := queryApi.Query(context.Background(), fmt.Sprintf(`from (bucket: "glassnode") |> range(start: %v, stop: %v) |> filter(fn: (r) => r.asset == "%v" and r.resolution == "%v" and r.path == %v)`, start, end, strings.ToUpper(asset), interval, endpoint.Path))
+		result, err := queryApi.Query(context.Background(), fmt.Sprintf(`from (bucket: "glassnode") |> range(start: %v, stop: %v) |> filter(fn: (r) => r.asset == "%v" and r.resolution == "%v" and r.path == "%v")`, start, end, strings.ToUpper(asset), resolution, path))
 		if err != nil {
-			fmt.Println("Error")
 			return "", err
 		}
-		var chart []chartReturn
+		var chart []types.ChartGetResponse
 		for result.Next() {
-			chart = append(chart, chartReturn{
+			chart = append(chart, types.ChartGetResponse{
 				T: result.Record().Time().Unix(),
 				V: result.Record().Value(),
 			})
 		}
 		chartJson, err := json.Marshal(chart)
-		if err == nil {
-			redis.Set(redisKey, chartJson, time.Hour)
+		if err != nil {
+			return "", err
 		}
+
+		redis.Set(redisKey, chartJson, time.Hour)
+		return string(chartJson), nil
 	}
-	return chartJson, err
 }

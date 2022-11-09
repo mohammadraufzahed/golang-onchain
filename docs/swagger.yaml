@@ -32,8 +32,6 @@ definitions:
         type: integer
       initialized:
         type: boolean
-      middleGroupID:
-        type: integer
       name:
         type: string
       path:
@@ -46,6 +44,12 @@ definitions:
         type: integer
       updatedAt:
         type: string
+    type: object
+  types.ChartGetResponse:
+    properties:
+      time:
+        type: integer
+      value: {}
     type: object
   types.CreateTopGroupReq:
     description: Required data to create the Top Group
@@ -135,6 +139,49 @@ info:
   title: Glassnode Service
   version: "1"
 paths:
+  /api/chart/:
+    get:
+      consumes:
+      - application/json
+      operationId: get_chart
+      parameters:
+      - description: Endpoint id
+        in: query
+        name: id
+        required: true
+        type: integer
+      - description: Asset name
+        in: query
+        name: a
+        required: true
+        type: string
+      - description: Resolution
+        in: query
+        name: r
+        required: true
+        type: string
+      - description: Start
+        in: query
+        name: s
+        required: true
+        type: integer
+      - description: End
+        in: query
+        name: e
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Data
+          schema:
+            items:
+              $ref: '#/definitions/types.ChartGetResponse'
+            type: array
+      summary: Get the chart data
+      tags:
+      - Charts
   /api/endpoint/{id}:
     get:
       operationId: endpoints_get_one

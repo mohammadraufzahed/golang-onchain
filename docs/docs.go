@@ -19,6 +19,69 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/chart/": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Charts"
+                ],
+                "summary": "Get the chart data",
+                "operationId": "get_chart",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Endpoint id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Asset name",
+                        "name": "a",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Resolution",
+                        "name": "r",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Start",
+                        "name": "s",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "End",
+                        "name": "e",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/types.ChartGetResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/endpoint/all": {
             "get": {
                 "produces": [
@@ -513,9 +576,6 @@ const docTemplate = `{
                 "initialized": {
                     "type": "boolean"
                 },
-                "middleGroupID": {
-                    "type": "integer"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -534,6 +594,15 @@ const docTemplate = `{
                 "updatedAt": {
                     "type": "string"
                 }
+            }
+        },
+        "types.ChartGetResponse": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "integer"
+                },
+                "value": {}
             }
         },
         "types.CreateTopGroupReq": {

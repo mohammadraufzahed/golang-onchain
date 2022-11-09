@@ -5,4 +5,5 @@ func InitializeRouter() {
 	InitializeTopGroupRouter()
 	InitializeMiddleGroupRouter()
 	InitializeEndpointRouter()
+	InitializeChartRouter()
 }
