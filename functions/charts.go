@@ -64,7 +64,7 @@ func InitializeChart(endpointID uint) {
 							fmt.Printf("Faild %v data.\n", len(points))
 						}
 						count = count + 1
-						if count == 40 {
+						if count == 30 {
 							count = 0
 							time.Sleep(time.Minute * 1)
 						}
