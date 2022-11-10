@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   cache:
@@ -39,6 +39,12 @@ services:
       INFLUXDB_ADMIN_USER: glassnode
       INFLUXDB_ADMIN_PASSWORD: glassnode
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: glassnode
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 500M
+
   # ui:
   #   image: chronograf:latest
   #   ports:

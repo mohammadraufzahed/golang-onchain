@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
 	"github.com/ario-team/glassnode-api/functions"
@@ -45,10 +43,10 @@ func main() {
 func StartInitializing() {
 	var endpoints []schema.Endpoint
 	database.Connection.Not("initialized = ?", true).Find(&endpoints)
-	fmt.Println(len(endpoints))
 	for _, endpoint := range endpoints {
 		workers.ChartJobs <- workers.ChartInput{
 			EndpointID: endpoint.ID,
 		}
+
 	}
 }
