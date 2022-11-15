@@ -25,12 +25,12 @@ func InitializeChartRouter() {
 // @ID      get_chart
 // @Accept  json
 // @Produce json
-// @Param   id         query     int                      true "Endpoint id"
-// @Param   a      query     string                   true "Asset name"
-// @Param   r query     string                   true "Resolution"
-// @Param   s     query     int                      true "Start"
-// @Param   e       query     int                      true "End"
-// @Success 200        {object} []types.ChartGetResponse "Data"
+// @Param   id  query    int                      true "Endpoint id"
+// @Param   a   query    string                   true "Asset name"
+// @Param   r   query    string                   true "Resolution"
+// @Param   s   query    int                      true "Start"
+// @Param   e   query    int                      true "End"
+// @Success 200 {object} []types.ChartGetResponse "Data"
 // @Router  /api/chart/ [get]
 func getChart(c *fiber.Ctx) error {
 	id, _ := strconv.Atoi(c.Query("id", "0"))

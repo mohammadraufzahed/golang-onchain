@@ -31,8 +31,9 @@ services:
     networks:
       - app
     environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
       DOCKER_INFLUXDB_INIT_USERNAME: influx
-      DOCKER_INFLUXDB_INIT_PASSWORD: influx
+      DOCKER_INFLUXDB_INIT_PASSWORD: influxpass123456
       DOCKER_INFLUXDB_INIT_ORG: glassnode
       DOCKER_INFLUXDB_INIT_BUCKET: glassnode
       INFLUXDB_DB: glassnode
@@ -42,8 +43,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "0.50"
-          memory: 500M
+          memory: 1G
 
   # ui:
   #   image: chronograf:latest

@@ -8,10 +8,17 @@ type EndpointGetAll struct {
 	ID          uint           `json:"id"`
 	Path        string         `json:"path"`
 	Tier        int            `json:"tier"`
+	Name				string				 `json:"name"`
+	Description string				 `json:"description"`
 	Assets      datatypes.JSON `json:"assets"`
 	Currencies  datatypes.JSON `json:"currencies"`
 	Resolutions datatypes.JSON `json:"resolutions"`
 	Formats     datatypes.JSON `json:"formats"`
+}
+
+type EndpointUpdate struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
 }
 
 type Assets struct {

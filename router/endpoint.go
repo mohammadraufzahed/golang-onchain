@@ -2,6 +2,7 @@ package router
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/ario-team/glassnode-api/database"
@@ -17,6 +18,7 @@ var endpointRoute fiber.Router = web.Server.Group("/api/endpoint")
 func InitializeEndpointRouter() {
 	endpointRoute.Get("/all", getEndpoints)
 	endpointRoute.Get("/:id", getEndpoint)
+	endpointRoute.Patch("/:id", updateEndpoint)
 }
 
 // Get supported endpoints
@@ -90,9 +92,59 @@ func getEndpoint(c *fiber.Ctx) error {
 		ID:          endpoint.ID,
 		Path:        endpoint.Path,
 		Tier:        endpoint.Tier,
+		Name: endpoint.Name,
+		Description: endpoint.Description,
 		Assets:      endpoint.Assets,
 		Currencies:  endpoint.Currencies,
 		Resolutions: endpoint.Resolutions,
 		Formats:     endpoint.Formats,
+	})
+}
+
+// Update the endpoint
+// @Summary Update the endpoint information
+// @Tags    Endpoints
+// @ID      endpoints_update
+// @Accept  json
+// @Produce json
+// @Param   id   path     int                     true "Endpoint ID"
+// @Param   data body     types.EndpointUpdate    true "Data"
+// @Success 200  {object} types.CreateTopGroupRes "Updated Successfully"
+// @Success 400  {object} types.CreateTopGroupRes "Bad request"
+// @Success 500  {object} types.CreateTopGroupRes "Server faild"
+// @Router  /api/endpoint/{id} [patch]
+func updateEndpoint(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil || id == 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status:  400,
+			Message: "ID not found",
+		})
+	}
+	var body types.EndpointUpdate
+	err = c.BodyParser(&body)
+	if err != nil {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status: 400,
+			Message: "Bad body",
+		})
+	}
+	var endpoint schema.Endpoint
+	dbResult := database.Connection.Where("id = ?", id).First(&endpoint)
+	if dbResult.RowsAffected == 0 {
+		return c.Status(400).JSON(types.CreateTopGroupRes{
+			Status: 400,
+			Message: "Endpoint with this id not found",
+		})
+	}
+	if body.Name != "" {
+		database.Connection.Model(&endpoint).Update("name", body.Name)	
+	}
+	if body.Description != "" {
+		database.Connection.Model(&endpoint).Update("description", body.Description)	
+	}
+	return c.Status(200).JSON(types.CreateTopGroupRes{
+		Status: 200,
+		Message: "Endpoint Updated",
 	})
 }

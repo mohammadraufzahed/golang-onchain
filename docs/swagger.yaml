@@ -76,12 +76,16 @@ definitions:
         items:
           type: integer
         type: array
+      description:
+        type: string
       formats:
         items:
           type: integer
         type: array
       id:
         type: integer
+      name:
+        type: string
       path:
         type: string
       resolutions:
@@ -90,6 +94,13 @@ definitions:
         type: array
       tier:
         type: integer
+    type: object
+  types.EndpointUpdate:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
     type: object
   types.GetTopGroups:
     properties:
@@ -203,6 +214,40 @@ paths:
           schema:
             $ref: '#/definitions/types.CreateTopGroupRes'
       summary: Get the supported endpoint
+      tags:
+      - Endpoints
+    patch:
+      consumes:
+      - application/json
+      operationId: endpoints_update
+      parameters:
+      - description: Endpoint ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/types.EndpointUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated Successfully
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+        "500":
+          description: Server faild
+          schema:
+            $ref: '#/definitions/types.CreateTopGroupRes'
+      summary: Update the endpoint information
       tags:
       - Endpoints
   /api/endpoint/all:
