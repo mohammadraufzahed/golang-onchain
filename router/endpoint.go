@@ -2,7 +2,6 @@ package router
 
 import (
 	"encoding/json"
-	"fmt"
 	"time"
 
 	"github.com/ario-team/glassnode-api/database"
@@ -48,6 +47,9 @@ func getEndpoints(c *fiber.Ctx) error {
 				Path:        endpoint.Path,
 				Tier:        endpoint.Tier,
 				Assets:      endpoint.Assets,
+				Name:        endpoint.Name,
+				Description: endpoint.Description,
+				Initialized: endpoint.Initialized,
 				Currencies:  endpoint.Currencies,
 				Resolutions: endpoint.Resolutions,
 				Formats:     endpoint.Formats,
@@ -92,8 +94,9 @@ func getEndpoint(c *fiber.Ctx) error {
 		ID:          endpoint.ID,
 		Path:        endpoint.Path,
 		Tier:        endpoint.Tier,
-		Name: endpoint.Name,
+		Name:        endpoint.Name,
 		Description: endpoint.Description,
+		Initialized: endpoint.Initialized,
 		Assets:      endpoint.Assets,
 		Currencies:  endpoint.Currencies,
 		Resolutions: endpoint.Resolutions,
@@ -125,7 +128,7 @@ func updateEndpoint(c *fiber.Ctx) error {
 	err = c.BodyParser(&body)
 	if err != nil {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
-			Status: 400,
+			Status:  400,
 			Message: "Bad body",
 		})
 	}
@@ -133,18 +136,18 @@ func updateEndpoint(c *fiber.Ctx) error {
 	dbResult := database.Connection.Where("id = ?", id).First(&endpoint)
 	if dbResult.RowsAffected == 0 {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
-			Status: 400,
+			Status:  400,
 			Message: "Endpoint with this id not found",
 		})
 	}
 	if body.Name != "" {
-		database.Connection.Model(&endpoint).Update("name", body.Name)	
+		database.Connection.Model(&endpoint).Update("name", body.Name)
 	}
 	if body.Description != "" {
-		database.Connection.Model(&endpoint).Update("description", body.Description)	
+		database.Connection.Model(&endpoint).Update("description", body.Description)
 	}
 	return c.Status(200).JSON(types.CreateTopGroupRes{
-		Status: 200,
+		Status:  200,
 		Message: "Endpoint Updated",
 	})
 }
