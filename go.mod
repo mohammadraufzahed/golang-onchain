@@ -3,6 +3,7 @@ module github.com/ario-team/glassnode-api
 go 1.18
 
 require (
+	github.com/getsentry/sentry-go v0.15.0
 	github.com/go-co-op/gocron v1.17.1
 	github.com/go-redis/redis/v9 v9.0.0-beta.3
 	github.com/gofiber/fiber/v2 v2.38.1
@@ -57,7 +58,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.40.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
-	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
+	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be // indirect
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.1.0 // indirect

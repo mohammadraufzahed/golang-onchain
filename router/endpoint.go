@@ -28,41 +28,35 @@ func InitializeEndpointRouter() {
 // @Success 200 {object} []types.EndpointGetAll "Successfull"
 // @Router  /api/endpoint/all [get]
 func getEndpoints(c *fiber.Ctx) error {
-	exists := redis.Exists("endpoints")
-	if exists == 1 {
-		endpoints := redis.Get("endpoints")
+
+	var endpoints []schema.Endpoint
+	database.Connection.Find(&endpoints)
+	if len(endpoints) == 0 {
 		c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-		return c.SendString(endpoints)
-	} else {
-		var endpoints []schema.Endpoint
-		database.Connection.Find(&endpoints)
-		if len(endpoints) == 0 {
-			c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-			return c.SendString("[]")
-		}
-		endpointsResult := []types.EndpointGetAll{}
-		for _, endpoint := range endpoints {
-			endpointsResult = append(endpointsResult, types.EndpointGetAll{
-				ID:          endpoint.ID,
-				Path:        endpoint.Path,
-				Tier:        endpoint.Tier,
-				Assets:      endpoint.Assets,
-				Name:        endpoint.Name,
-				Description: endpoint.Description,
-				Initialized: endpoint.Initialized,
-				Currencies:  endpoint.Currencies,
-				Resolutions: endpoint.Resolutions,
-				Formats:     endpoint.Formats,
-			})
-		}
-		endpointsJson, err := json.Marshal(endpointsResult)
-		if err != nil {
-			return err
-		}
-		redis.Set("endpoints", string(endpointsJson), time.Hour*5)
-		c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
-		return c.SendString(string(endpointsJson))
+		return c.SendString("[]")
 	}
+	endpointsResult := []types.EndpointGetAll{}
+	for _, endpoint := range endpoints {
+		endpointsResult = append(endpointsResult, types.EndpointGetAll{
+			ID:          endpoint.ID,
+			Path:        endpoint.Path,
+			Tier:        endpoint.Tier,
+			Assets:      endpoint.Assets,
+			Name:        endpoint.Name,
+			Description: endpoint.Description,
+			Initialized: endpoint.Initialized,
+			Currencies:  endpoint.Currencies,
+			Resolutions: endpoint.Resolutions,
+			Formats:     endpoint.Formats,
+		})
+	}
+	endpointsJson, err := json.Marshal(endpointsResult)
+	if err != nil {
+		return err
+	}
+	redis.Set("endpoints", string(endpointsJson), time.Hour*5)
+	c.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
+	return c.SendString(string(endpointsJson))
 }
 
 // Get supported endpoint

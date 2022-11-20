@@ -13,7 +13,7 @@ COPY . .
 
 RUN swag init --parseDependency --parseInternal --parseDepth 1 -g ./web/start.go
 
-RUN GOMAXPROCS=7 go build -ldflags="-s -w" -o glassnode-api main.go
+RUN go build -ldflags="-s -w" -o glassnode-api main.go
 
 FROM debian:bullseye
 

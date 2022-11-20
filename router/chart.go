@@ -64,7 +64,7 @@ func getChart(c *fiber.Ctx) error {
 			Message: "This endpoint does not support this asset",
 		})
 	}
-	if !strings.Contains(string(endpoint.Resolutions), fmt.Sprintf(`%v`, strings.ToUpper(resolution))) {
+	if !strings.Contains(string(endpoint.Resolutions), fmt.Sprintf(`%v`, strings.ToLower(resolution))) {
 		return c.Status(400).JSON(types.CreateTopGroupRes{
 			Status:  400,
 			Message: "This endpoint does not support this resolution",

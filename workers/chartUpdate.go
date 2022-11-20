@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/ario-team/glassnode-api/functions"
+	"github.com/ario-team/glassnode-api/logger"
 	"github.com/ario-team/glassnode-api/schema"
 )
 
@@ -23,6 +24,8 @@ func InitializeChartUpdateJobs() {
 
 func chartUpdateWorker(endpoints <-chan ChartUpdateInput, id int) {
 	for endpoint := range endpoints {
+		logger.Logger.Printf("Worker %v: Updating the chart with %v id", endpoint.Endpoint.ID, id)
 		functions.UpdateChart(endpoint.Endpoint, endpoint.Time)
+		logger.Logger.Printf("Worker %v: Updated the chart with %v id", endpoint.Endpoint.ID, id)
 	}
 }

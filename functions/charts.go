@@ -11,8 +11,10 @@ import (
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
 	"github.com/ario-team/glassnode-api/influxdb"
+	"github.com/ario-team/glassnode-api/logger"
 	"github.com/ario-team/glassnode-api/redis"
 	"github.com/ario-team/glassnode-api/schema"
+	"github.com/ario-team/glassnode-api/sentry"
 	"github.com/ario-team/glassnode-api/types"
 	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 )
@@ -28,7 +30,7 @@ func InitializeChart(endpointID uint) {
 	count := 0
 	httpClient := &http.Client{}
 	writeApi := influxdb.Client.WriteAPIBlocking("glassnode", "glassnode")
-	fmt.Printf("Collecting chart %v with %v assets with %v resolutions\n", endpointID, len(assets), len(resolutions))
+	apiCount := 0
 	for _, asset := range assets {
 		baseUrl := fmt.Sprintf("%v%v?a=%v&f=JSON", config.Viper.GetString("GLASSNODE_BASE_URL"), endpoint.Path, asset.Symbol)
 		for _, resolution := range resolutions {
@@ -53,7 +55,8 @@ func InitializeChart(endpointID uint) {
 								SetTime(time.Unix(int64(point.Time), 0))
 							err := writeApi.WritePoint(context.Background(), p)
 							if err != nil {
-								fmt.Println(err.Error())
+								sentry.Sentry.CaptureException(err)
+								logger.Logger.Panic(err)
 							}
 						}
 						err := writeApi.Flush(context.Background())
@@ -70,7 +73,11 @@ func InitializeChart(endpointID uint) {
 						}
 					}
 				} else {
-					fmt.Println(err.Error())
+					apiCount++
+					if apiCount > 2 {
+						sentry.Sentry.CaptureException(err)
+						logger.Logger.Panic(err)
+					}
 				}
 			}
 		}
@@ -113,7 +120,8 @@ func UpdateChart(endpoint schema.Endpoint, start time.Time) {
 								SetTime(time.Unix(int64(point.Time), 0))
 							err := writeApi.WritePoint(context.Background(), p)
 							if err != nil {
-								fmt.Println(err.Error())
+								sentry.Sentry.CaptureException(err)
+								logger.Logger.Panic(err)
 							}
 						}
 						err := writeApi.Flush(context.Background())
@@ -130,13 +138,13 @@ func UpdateChart(endpoint schema.Endpoint, start time.Time) {
 						}
 					}
 				} else {
-					fmt.Println(err.Error())
+					sentry.Sentry.CaptureException(err)
+					logger.Logger.Panic(err)
 				}
 			}
 		}
 	}
-	endpoint.Initialized = true
-	database.Connection.Save(&endpoint)
+	database.Connection.Model(&endpoint).Update("initialized", true)
 }
 func GetChart(path string, asset string, resolution string, start int, end int) (string, error) {
 	redisKey := fmt.Sprintf("%v/%v/%v/%v/%v", path, asset, resolution, start, end)
