@@ -1,8 +1,6 @@
 package main
 
 import (
-	"time"
-
 	"github.com/ario-team/glassnode-api/config"
 	"github.com/ario-team/glassnode-api/database"
 	"github.com/ario-team/glassnode-api/functions"
@@ -24,7 +22,6 @@ func main() {
 	logger.Init()
 	// Initialize the sentry
 	sentry.Init()
-	defer sentry.Sentry.Flush(time.Second * 4)
 	// Connect to the redis
 	redis.Connect()
 	defer redis.Connection.Close()
@@ -42,7 +39,6 @@ func main() {
 	// Initialize Router and middleware
 	web.InitailizeMiddlewares()
 	router.InitializeRouter()
-	// fmt.Println(time.Now().UTC().Unix())
 	// Initialize workers
 	workers.InitializeWorkers()
 	// Start the webserver
