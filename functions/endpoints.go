@@ -10,7 +10,6 @@ import (
 	"github.com/ario-team/glassnode-api/database"
 	"github.com/ario-team/glassnode-api/logger"
 	"github.com/ario-team/glassnode-api/schema"
-	"github.com/ario-team/glassnode-api/sentry"
 )
 
 func GetEndPoints() {
@@ -19,14 +18,15 @@ func GetEndPoints() {
 	httpClient := &http.Client{}
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/v2/metrics/endpoints", baseURL), nil)
 	if err != nil {
-		sentry.Sentry.CaptureException(err)
 		logger.Logger.Panic(err)
 	}
 	req.Header.Set("X-Api-Key", apiKey)
 	res, err := httpClient.Do(req)
 	if err != nil {
-		sentry.Sentry.CaptureException(err)
 		logger.Logger.Panic(err)
+	}
+	if res.StatusCode != 200 {
+		logger.Logger.Panicln("Glassnode: Endpoints faild")
 	}
 	defer res.Body.Close()
 	var data []schema.Endpoint
