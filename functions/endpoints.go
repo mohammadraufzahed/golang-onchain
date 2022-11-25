@@ -3,6 +3,7 @@ package functions
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -26,7 +27,9 @@ func GetEndPoints() {
 		logger.Logger.Panic(err)
 	}
 	if res.StatusCode != http.StatusOK {
-		logger.Logger.Panicf("Non-OK HTTP Status: %v\n", res.StatusCode)
+		b, _ := io.ReadAll(res.Body)
+		logger.Logger.Printf("Non-OK HTTP Status: %v. body: %v\n", res.StatusCode, string(b))
+		panic(string(b))
 	}
 	defer res.Body.Close()
 	var data []schema.Endpoint
