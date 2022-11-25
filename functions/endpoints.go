@@ -25,8 +25,8 @@ func GetEndPoints() {
 	if err != nil {
 		logger.Logger.Panic(err)
 	}
-	if res.StatusCode != 200 {
-		logger.Logger.Panicln("Glassnode: Endpoints faild")
+	if res.StatusCode != http.StatusOK {
+		logger.Logger.Panicf("Non-OK HTTP Status: %v\n", res.StatusCode)
 	}
 	defer res.Body.Close()
 	var data []schema.Endpoint
